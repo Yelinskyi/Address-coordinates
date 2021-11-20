@@ -1,6 +1,5 @@
 package yelinskyi.addresscoordinates.service;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import yelinskyi.addresscoordinates.model.Coordinates;
@@ -22,10 +21,7 @@ public class CoordinatesServiceImpl implements CoordinatesService {
 
     @Override
     public Optional<Coordinates> findByCoordinates(Coordinates currentCoordinates) {
-        List<Coordinates> all = coordinatesRepository.findAll();
-        return all.stream()
-                .filter(coordinates -> coordinates.getLat().equals(currentCoordinates.getLat())
-                        && coordinates.getLon().equals(currentCoordinates.getLon()))
-                .findFirst();
+        return coordinatesRepository.findCoordinatesByLonAndLat(
+                currentCoordinates.getLon(), currentCoordinates.getLat());
     }
 }
