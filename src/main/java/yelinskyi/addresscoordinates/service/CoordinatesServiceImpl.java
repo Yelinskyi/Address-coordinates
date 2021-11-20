@@ -20,8 +20,14 @@ public class CoordinatesServiceImpl implements CoordinatesService {
     }
 
     @Override
-    public Optional<Coordinates> findByCoordinates(Coordinates currentCoordinates) {
-        return coordinatesRepository.findCoordinatesByLonAndLat(
-                currentCoordinates.getLon(), currentCoordinates.getLat());
+    public Coordinates findByCoordinates(Coordinates currentCoordinates) {
+        Optional<Coordinates> coordinatesByLonAndLat =
+                coordinatesRepository.findCoordinatesByLonAndLat(
+                        currentCoordinates.getLon(), currentCoordinates.getLat());
+        if (coordinatesByLonAndLat.isPresent()) {
+            return coordinatesByLonAndLat.get();
+        }
+        return save(currentCoordinates);
+
     }
 }

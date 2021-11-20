@@ -1,7 +1,6 @@
 package yelinskyi.addresscoordinates.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,13 +42,7 @@ public class AddressController {
         String forSearch = country + ",+" + city + ",+" + street + ",+" + numberOfHouse;
         CoordinatesResponseDto apiResponseDto = httpClient.get(START_URL + forSearch + END_URL);
         Coordinates coordinates = apiResponseMapper.toCoordinates(apiResponseDto);
-        Optional<Coordinates> byCoordinates = coordinatesService.findByCoordinates(coordinates);
-        Coordinates coordinatesFromDB;
-        if (byCoordinates.isPresent()) {
-            coordinatesFromDB = byCoordinates.get();
-        } else {
-            coordinatesFromDB = coordinatesService.save(coordinates);
-        }
+        Coordinates coordinatesFromDB = coordinatesService.findByCoordinates(coordinates);
         address.setCoordinates(coordinatesFromDB);
         addressService.save(address);
         return apiResponseMapper.toCoordinatesResponseDto(address.getCoordinates());
